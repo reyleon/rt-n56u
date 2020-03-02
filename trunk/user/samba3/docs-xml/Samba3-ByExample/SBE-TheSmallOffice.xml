@@ -306,10 +306,10 @@
 		network printers also. An example <filename>/etc/hosts</filename> file is shown here:
 <screen>
 192.168.1.1     sleeth sleeth1
-192.168.2.1     sleeth2
+192.168.68.1     sleeth2
 192.168.1.10    hplj6
 192.168.1.11    hplj4
-192.168.2.10    qms
+192.168.68.10    qms
 </screen>
 		</para></step>
 
@@ -511,7 +511,7 @@ Users (S-1-5-32-545) -> -1
 <screen>
 &rootprompt; lpadmin -p hplj4 -v socket://192.168.1.11:9100 -E
 &rootprompt; lpadmin -p hplj6 -v socket://192.168.1.10:9100 -E
-&rootprompt; lpadmin -p qms -v socket://192.168.2.10:9100 -E
+&rootprompt; lpadmin -p qms -v socket://192.168.68.10:9100 -E
 </screen>
 		<indexterm><primary>print filter</primary></indexterm>
 		This creates the necessary print queues with no assigned print filter.
@@ -549,8 +549,8 @@ default-lease-time 86400;
 
 option ntp-servers 192.168.1.1;
 option domain-name "abmas.biz";
-option domain-name-servers 192.168.1.1, 192.168.2.1;
-option netbios-name-servers 192.168.1.1, 192.168.2.1;
+option domain-name-servers 192.168.1.1, 192.168.68.1;
+option netbios-name-servers 192.168.1.1, 192.168.68.1;
 option netbios-node-type 8;
 ### NOTE ###
 # netbios-node-type=8 means set clients to Hybrid Mode
@@ -574,9 +574,9 @@ subnet 192.168.1.0 netmask 255.255.255.0 {
 		}
 	}
 subnet 192.168.2.0 netmask 255.255.255.0 {
-	range dynamic-bootp 192.168.2.128 192.168.2.254;
+	range dynamic-bootp 192.168.68.128 192.168.2.254;
 	option subnet-mask 255.255.255.0;
-	option routers 192.168.2.1;
+	option routers 192.168.68.1;
 	allow unknown-clients;
 	host qms {
 		hardware ethernet 01:04:31:db:e1:c0;

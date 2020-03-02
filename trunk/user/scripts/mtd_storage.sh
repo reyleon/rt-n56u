@@ -266,7 +266,7 @@ func_fill()
 sync && echo 3 > /proc/sys/vm/drop_caches
 
 # Mount SATA disk
-#mdev -s
+mdev -s
 
 EOF
 		chmod 755 "$script_started"

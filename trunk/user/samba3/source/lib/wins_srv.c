@@ -34,7 +34,7 @@ extern struct in_addr loopback_ip;
   'tag'. A wins tag is a label for a group of wins servers. For
   example if you use
 
-      wins server = fred:192.168.2.10 mary:192.168.3.199 fred:192.168.2.61
+      wins server = fred:192.168.68.10 mary:192.168.3.199 fred:192.168.2.61
 
   then you would have two groups of wins servers, one tagged with the
   name 'fred' and the other with the name 'mary'. I would usually

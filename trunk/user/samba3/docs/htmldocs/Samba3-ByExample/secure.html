@@ -413,7 +413,7 @@ server.abmas.us
 </p><pre class="screen">
 127.0.0.1       localhost
 192.168.1.1     sleeth1.abmas.biz sleeth1 diamond
-192.168.2.1     sleeth2.abmas.biz sleeth2
+192.168.68.1     sleeth2.abmas.biz sleeth2
 123.45.67.66    server.abmas.us server
 </pre><p>
 		You should check the startup order of your system. If the CUPS print server is started before
@@ -772,8 +772,8 @@ max-lease-time 172800;
 default-lease-time 86400;
 option ntp-servers 192.168.1.1;
 option domain-name "abmas.biz";
-option domain-name-servers 192.168.1.1, 192.168.2.1;
-option netbios-name-servers 192.168.1.1, 192.168.2.1;
+option domain-name-servers 192.168.1.1, 192.168.68.1;
+option netbios-name-servers 192.168.1.1, 192.168.68.1;
 option netbios-node-type 8;       ### Node type = Hybrid ###
 ddns-updates on;                  ### Dynamic DNS enabled ###
 ddns-update-style interim;
@@ -793,9 +793,9 @@ subnet 192.168.1.0 netmask 255.255.255.0 {
                 }
         }
 subnet 192.168.2.0 netmask 255.255.255.0 {
-        range dynamic-bootp 192.168.2.128 192.168.2.254;
+        range dynamic-bootp 192.168.68.128 192.168.2.254;
         option subnet-mask 255.255.255.0;
-        option routers 192.168.2.1;
+        option routers 192.168.68.1;
         allow unknown-clients;
         host qmsf {
                 hardware ethernet 01:04:31:db:e1:c0;
@@ -975,7 +975,7 @@ abmas.biz       IN SOA  sleeth1.abmas.biz. root.abmas.biz. (
                         MX      10 mail.abmas.biz.
 $ORIGIN abmas.biz.
 sleeth1                 A       192.168.1.1
-sleeth2                 A       192.168.2.1
+sleeth2                 A       192.168.68.1
 qmsa                    A       192.168.1.20
 hplj6a                  A       192.168.1.30
 qmsf                    A       192.168.2.20

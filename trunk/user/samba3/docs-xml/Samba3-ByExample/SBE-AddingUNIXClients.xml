@@ -663,7 +663,7 @@ Join to 'MEGANET2' failed.
 <smbconfoption name="smb ports">139</smbconfoption>
 <smbconfoption name="name resolve order">wins bcast hosts</smbconfoption>
 <smbconfoption name="printcap name">CUPS</smbconfoption>
-<smbconfoption name="wins server">192.168.2.1</smbconfoption>
+<smbconfoption name="wins server">192.168.68.1</smbconfoption>
 <smbconfoption name="ldap suffix">dc=abmas,dc=biz</smbconfoption>
 <smbconfoption name="ldap machine suffix">ou=People</smbconfoption>
 <smbconfoption name="ldap user suffix">ou=People</smbconfoption>
@@ -712,7 +712,7 @@ structuralObjectClass: organizationalUnit
 <title>Configuration File for NSS LDAP Support &smbmdash; <filename>/etc/ldap.conf</filename></title>
 <screen>
 URI     ldap://massive.abmas.biz ldap://massive.abmas.biz:636
-host    192.168.2.1
+host    192.168.68.1
 base    dc=abmas,dc=biz
 binddn  cn=Manager,dc=abmas,dc=biz
 bindpw  not24get
@@ -942,7 +942,7 @@ MEGANET2+PIOps:x:10005:
 <smbconfoption name="smb ports">139</smbconfoption>
 <smbconfoption name="name resolve order">wins bcast hosts</smbconfoption>
 <smbconfoption name="printcap name">CUPS</smbconfoption>
-<smbconfoption name="wins server">192.168.2.1</smbconfoption>
+<smbconfoption name="wins server">192.168.68.1</smbconfoption>
 <smbconfoption name="idmap uid">10000-20000</smbconfoption>
 <smbconfoption name="idmap gid">10000-20000</smbconfoption>
 <smbconfoption name="template primary group">"Domain Users"</smbconfoption>
@@ -1040,7 +1040,7 @@ Joined domain MEGANET2.
 <smbconfoption name="smb ports">139</smbconfoption>
 <smbconfoption name="name resolve order">wins bcast hosts</smbconfoption>
 <smbconfoption name="printcap name">CUPS</smbconfoption>
-<smbconfoption name="wins server">192.168.2.1</smbconfoption>
+<smbconfoption name="wins server">192.168.68.1</smbconfoption>
 <smbconfoption name="printer admin">root</smbconfoption>
 <smbconfoption name="hosts allow">192.168.2., 192.168.3., 127.</smbconfoption>
 <smbconfoption name="printing">cups</smbconfoption>
@@ -1427,13 +1427,13 @@ LONDON+DnsUpdateProxy:x:10008:
 		the Active Directory server is using Kerberos protocols. Execute the following:
 <screen>
 &rootprompt; net ads info
-LDAP server: 192.168.2.123
+LDAP server: 192.168.68.123
 LDAP server name: w2k3s
 Realm: LONDON.ABMAS.BIZ
 Bind Path: dc=LONDON,dc=ABMAS,dc=BIZ
 LDAP port: 389
 Server time: Sat, 03 Jan 2004 02:44:44 GMT
-KDC server: 192.168.2.123
+KDC server: 192.168.68.123
 Server time offset: 2
 </screen>
 		It should be noted that Kerberos protocols are time-clock critical. You should
@@ -1928,7 +1928,7 @@ hosts:  files wins
         tool set for this solution. Configure the <filename>/etc/ldap.conf</filename> file so it has
         the information needed. The following is an example of a working file:
 <screen>
-host    192.168.2.1
+host    192.168.68.1
 base    dc=snowshow,dc=com
 binddn  cn=Manager,dc=snowshow,dc=com
 bindpw  not24get

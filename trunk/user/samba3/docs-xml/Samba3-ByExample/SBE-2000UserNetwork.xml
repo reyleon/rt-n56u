@@ -1194,7 +1194,7 @@ index default               sub
 <smbconfoption name="domain logons">Yes</smbconfoption>
 <smbconfoption name="os level">63</smbconfoption>
 <smbconfoption name="domain master">No</smbconfoption>
-<smbconfoption name="wins server">192.168.2.1</smbconfoption>
+<smbconfoption name="wins server">192.168.68.1</smbconfoption>
 <smbconfoption name="ldap suffix">dc=abmas,dc=biz</smbconfoption>
 <smbconfoption name="ldap machine suffix">ou=People</smbconfoption>
 <smbconfoption name="ldap user suffix">ou=People</smbconfoption>

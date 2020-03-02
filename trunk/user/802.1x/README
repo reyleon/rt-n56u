@@ -141,7 +141,7 @@ We use complier option to turn on/off the multiple RADIUS servers for 802.1x.
 We extend some variables to support individual RADIUS server IP address, port and secret key for MBSS. 
 
 	For example :
-		RADIUS_Server=192.168.2.1;192.168.2.2;192.168.2.3;192.168.2.4
+		RADIUS_Server=192.168.68.1;192.168.2.2;192.168.2.3;192.168.2.4
 		RADIUS_Port=1811;1812;1813;1814
 		RADIUS_Key=ralink_1;ralink_2;ralink_3;ralink_4
 		or
@@ -153,7 +153,7 @@ We extend some variables to support individual RADIUS server IP address, port an
 		For backward compatible, driver would parse "RADIUS_Key" or "RADIUS_KeyX"(X=1~4) for radius key usage.
 		But the paramter "RADIUS_Key" has the first priority.
 
-		p.s. This implies the RADIUS server IP of ra0 is 192.168.2.1, its port is 1811 and its secret key is ralink_1. 
+		p.s. This implies the RADIUS server IP of ra0 is 192.168.68.1, its port is 1811 and its secret key is ralink_1. 
 			 The RADIUS server IP of ra1 is 192.168.2.2, its port is 1812 and its secret key is ralink_2. 	
 			 The RADIUS server IP of ra2 is 192.168.2.3, its port is 1813 and its secret key is ralink_3. 	
 			 The RADIUS server IP of ra3 is 192.168.2.4, its port is 1814 and its secret key is ralink_4. 	

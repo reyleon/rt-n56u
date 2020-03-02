@@ -42,14 +42,14 @@
 	
 	<para>
 	The example below configures three network interfaces corresponding 
-	to the eth0 device and IP addresses 192.168.2.10 and 192.168.3.10. 
+	to the eth0 device and IP addresses 192.168.68.10 and 192.168.3.10. 
 	The netmasks of the latter two interfaces would be set to 255.255.255.0.
 	</para>
 
 </description>
 <related>bind interfaces only</related>
 
-<value type="example">eth0 192.168.2.10/24 192.168.3.10/255.255.255.0</value>
+<value type="example">eth0 192.168.68.10/24 192.168.3.10/255.255.255.0</value>
 
 <value type="default"/>
 </samba:parameter>
