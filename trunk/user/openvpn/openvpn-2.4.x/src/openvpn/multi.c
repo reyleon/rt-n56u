@@ -5,7 +5,7 @@
  *             packet encryption, packet authentication, and
  *             packet compression.
  *
- *  Copyright (C) 2002-2017 OpenVPN Technologies, Inc. <sales@openvpn.net>
+ *  Copyright (C) 2002-2018 OpenVPN Inc <sales@openvpn.net>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License version 2
@@ -555,8 +555,7 @@ setenv_stats(struct context *c)
 }
 
 static void
-multi_client_disconnect_setenv(struct multi_context *m,
-                               struct multi_instance *mi)
+multi_client_disconnect_setenv(struct multi_instance *mi)
 {
     /* setenv client real IP address */
     setenv_trusted(mi->context.c2.es, get_link_socket_info(&mi->context));
@@ -572,13 +571,12 @@ multi_client_disconnect_setenv(struct multi_context *m,
 }
 
 static void
-multi_client_disconnect_script(struct multi_context *m,
-                               struct multi_instance *mi)
+multi_client_disconnect_script(struct multi_instance *mi)
 {
     if ((mi->context.c2.context_auth == CAS_SUCCEEDED && mi->connection_established_flag)
         || mi->context.c2.context_auth == CAS_PARTIAL)
     {
-        multi_client_disconnect_setenv(m, mi);
+        multi_client_disconnect_setenv(mi);
 
         if (plugin_defined(mi->context.plugins, OPENVPN_PLUGIN_CLIENT_DISCONNECT))
         {
@@ -685,7 +683,7 @@ multi_close_instance(struct multi_context *m,
     set_cc_config(mi, NULL);
 #endif
 
-    multi_client_disconnect_script(m, mi);
+    multi_client_disconnect_script(mi);
 
     if (mi->did_open_context)
     {
@@ -1077,6 +1075,7 @@ multi_learn_addr(struct multi_context *m,
     struct hash_bucket *bucket = hash_bucket(m->vhash, hv);
     struct multi_route *oldroute = NULL;
     struct multi_instance *owner = NULL;
+    struct gc_arena gc = gc_new();
 
     /* if route currently exists, get the instance which owns it */
     he = hash_lookup_fast(m->vhash, bucket, addr, hv);
@@ -1090,11 +1089,9 @@ multi_learn_addr(struct multi_context *m,
     }
 
     /* do we need to add address to hash table? */
-    if ((!owner || owner != mi)
-        && mroute_learnable_address(addr)
+    if ((!owner || owner != mi) && mroute_learnable_address(addr, &gc)
         && !mroute_addr_equal(addr, &m->local))
     {
-        struct gc_arena gc = gc_new();
         struct multi_route *newroute;
         bool learn_succeeded = false;
 
@@ -1113,7 +1110,7 @@ multi_learn_addr(struct multi_context *m,
 
         if (oldroute) /* route already exists? */
         {
-            if (route_quota_test(m, mi) && learn_address_script(m, mi, "update", &newroute->addr))
+            if (route_quota_test(mi) && learn_address_script(m, mi, "update", &newroute->addr))
             {
                 learn_succeeded = true;
                 owner = mi;
@@ -1130,7 +1127,7 @@ multi_learn_addr(struct multi_context *m,
         }
         else
         {
-            if (route_quota_test(m, mi) && learn_address_script(m, mi, "add", &newroute->addr))
+            if (route_quota_test(mi) && learn_address_script(m, mi, "add", &newroute->addr))
             {
                 learn_succeeded = true;
                 owner = mi;
@@ -1151,9 +1148,8 @@ multi_learn_addr(struct multi_context *m,
         {
             free(newroute);
         }
-
-        gc_free(&gc);
     }
+    gc_free(&gc);
 
     return owner;
 }
@@ -1581,7 +1577,7 @@ multi_select_virtual_addr(struct multi_context *m, struct multi_instance *mi)
  * Set virtual address environmental variables.
  */
 static void
-multi_set_virtual_addr_env(struct multi_context *m, struct multi_instance *mi)
+multi_set_virtual_addr_env(struct multi_instance *mi)
 {
     setenv_del(mi->context.c2.es, "ifconfig_pool_local_ip");
     setenv_del(mi->context.c2.es, "ifconfig_pool_remote_ip");
@@ -1660,7 +1656,7 @@ multi_client_connect_post(struct multi_context *m,
          * directory or any --ifconfig-pool dynamic address.
          */
         multi_select_virtual_addr(m, mi);
-        multi_set_virtual_addr_env(m, mi);
+        multi_set_virtual_addr_env(mi);
     }
 }
 
@@ -1704,7 +1700,7 @@ multi_client_connect_post_plugin(struct multi_context *m,
          * directory or any --ifconfig-pool dynamic address.
          */
         multi_select_virtual_addr(m, mi);
-        multi_set_virtual_addr_env(m, mi);
+        multi_set_virtual_addr_env(mi);
     }
 }
 
@@ -1744,7 +1740,7 @@ multi_client_connect_mda(struct multi_context *m,
          * directory or any --ifconfig-pool dynamic address.
          */
         multi_select_virtual_addr(m, mi);
-        multi_set_virtual_addr_env(m, mi);
+        multi_set_virtual_addr_env(mi);
     }
 }
 
@@ -1763,7 +1759,7 @@ multi_client_connect_setenv(struct multi_context *m,
     setenv_trusted(mi->context.c2.es, get_link_socket_info(&mi->context));
 
     /* setenv client virtual IP address */
-    multi_set_virtual_addr_env(m, mi);
+    multi_set_virtual_addr_env(mi);
 
     /* setenv connection time */
     {
@@ -2921,7 +2917,7 @@ multi_process_drop_outgoing_tun(struct multi_context *m, const unsigned int mpp_
  */
 
 void
-route_quota_exceeded(const struct multi_context *m, const struct multi_instance *mi)
+route_quota_exceeded(const struct multi_instance *mi)
 {
     struct gc_arena gc = gc_new();
     msg(D_ROUTE_QUOTA, "MULTI ROUTE: route quota (%d) exceeded for %s (see --max-routes-per-client option)",
@@ -3355,12 +3351,6 @@ init_management_callback_multi(struct multi_context *m)
         management_set_callback(management, &cb);
     }
 #endif /* ifdef ENABLE_MANAGEMENT */
-}
-
-void
-uninit_management_callback_multi(struct multi_context *m)
-{
-    uninit_management_callback();
 }
 
 /*
